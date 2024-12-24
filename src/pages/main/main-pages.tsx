@@ -17,7 +17,7 @@ function MainPages() {
     setLoading(true);
 
     // Kirim request ke API untuk mencari
-    const response = await fetch("http://127.0.0.1:8000/search/", {
+    const response = await fetch("https://ir-tpb4-backend.onrender.com/search/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

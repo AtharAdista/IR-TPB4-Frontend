@@ -12,7 +12,7 @@ function DocDetail() {
       setLoading(true);
       try {
         // Kirim request ke API untuk mendapatkan detail dokumen
-        const response = await fetch(`http://127.0.0.1:8000/search/${docId}`);
+        const response = await fetch(`https://ir-tpb4-backend.onrender.com/search/${docId}`);
         const data = await response.json();
         setDocDetail(data);  // Set hasil detail dokumen
       } catch (error) {
