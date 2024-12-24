@@ -1,17 +1,18 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";  // Import useNavigate
+import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { SearchResult } from "../../types/types";
 
 function MainPages() {
   const [query, setQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();  // Hook untuk navigasi
+  const navigate = useNavigate(); // Hook untuk navigasi
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(e.target.value);
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
 
@@ -25,27 +26,27 @@ function MainPages() {
     });
 
     const data = await response.json();
-    console.log(data)
-    setSearchResults(data.results);  // Set hasil pencarian
+    console.log(data);
+    setSearchResults(data.results); // Set hasil pencarian
     setLoading(false);
   };
 
-  const handleDocClick = (docId) => {
+  const handleDocClick = (docId: number) => {
     // Navigasi ke halaman baru dan kirim doc_id melalui URL
     navigate(`/document/${docId}`);
   };
 
   return (
-    <div className="min-h-screen w-full justify-center items-center flex">
-      <div>
-        <p className="text-2xl font-semibold mb-4">Search Example</p>
-        <form onSubmit={handleSubmit} className="flex items-center space-x-2 mb-4">
+    <div className="min-h-screen w-full justify-center pt-10 flex">
+      <div className="flex flex-col">
+        <p className="text-2xl font-semibold mb-4">GULU-GULU</p>
+        <form onSubmit={handleSubmit} className="flex space-x-2 mb-4">
           <input
             type="text"
             value={query}
             onChange={handleChange}
             placeholder="Search..."
-            className="px-4 py-2 border rounded-md w-64 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="px-4 py-2 border rounded-md lg:w-[1000px] md:w-[750px] w-[300px] focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           <button
             type="submit"
@@ -59,13 +60,16 @@ function MainPages() {
             <p>Loading...</p>
           ) : searchResults.length > 0 ? (
             <ul>
-              {searchResults.map((result: any) => (
+              {searchResults.map((result: SearchResult) => (
                 <li
                   key={result.doc_id}
                   className="p-2 border-b cursor-pointer"
-                  onClick={() => handleDocClick(result.doc_id)}  // Arahkan ke halaman dengan doc_id
+                  onClick={() => handleDocClick(result.doc_id)} // Arahkan ke halaman dengan doc_id
                 >
-                  <strong>{result.doc_id}</strong>: {result.title}
+                  <div className="flex flex-col lg:w-[1000px] md:w-[750px] w-[300px]">
+                    <p className="font-bold ">{result.title.replace(/"/g, '')}</p>
+                    <p>{result.content}</p>
+                  </div>
                 </li>
               ))}
             </ul>
